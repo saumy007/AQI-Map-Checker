@@ -6,9 +6,9 @@ import 'leaflet/dist/leaflet.css';
 import 'leaflet.heat';
 import axios from 'axios';
 import { Search, Loader2, Layers, MapPin, Wind } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+import { Button } from './components/ui/button';
+import { Input } from './components/ui/input';
+import { Card } from './components/ui/card';
 import { toast } from 'sonner';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
