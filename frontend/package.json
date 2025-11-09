@@ -75,6 +75,7 @@
     ]
   },
   "devDependencies": {
+        "ajv-keywords": "^5.1.0",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@craco/craco": "^7.1.0",
     "@eslint/js": "9.23.0",
