@@ -3,6 +3,7 @@ import '@/App.css';
 import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import 'leaflet.heat';
 import axios from 'axios';
 import { Search, Loader2, Layers, MapPin, Wind } from 'lucide-react';
 import { Button } from '@/components/ui/button';
