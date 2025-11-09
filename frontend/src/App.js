@@ -118,6 +118,58 @@ const MapEventHandler = ({ onBoundsChange, showHeatmap }) => {
   return null;
 };
 
+// Heatmap Layer Component - creates colored areas on the map
+const HeatmapLayer = ({ stations }) => {
+  const map = useMap();
+  const heatmapLayerRef = useRef(null);
+  
+  useEffect(() => {
+    if (!map || !stations || stations.length === 0) return;
+    
+    // Remove existing heatmap layer if any
+    if (heatmapLayerRef.current) {
+      map.removeLayer(heatmapLayerRef.current);
+    }
+    
+    // Prepare heatmap data with normalized intensity based on AQI
+    // AQI values: 0-1000, normalize to 0-1 for heatmap intensity
+    const heatmapData = stations.map(station => {
+      // Normalize AQI to 0-1 range (0 = good, 1 = hazardous)
+      const normalizedIntensity = Math.min(station.aqi / 500, 1); // Cap at 500 for better visualization
+      return [station.lat, station.lon, normalizedIntensity];
+    });
+    
+    // Create heatmap layer with custom gradient matching our AQI colors
+    const heatLayer = L.heatLayer(heatmapData, {
+      radius: 40,
+      blur: 35,
+      maxZoom: 17,
+      max: 1.0,
+      minOpacity: 0.5,
+      // Custom gradient: green → yellow → orange → red
+      gradient: {
+        0.0: '#00b050',   // Green (Good AQI 0-50)
+        0.2: '#92d050',   // Light green (AQI 50-100)
+        0.4: '#ffff66',   // Yellow (AQI 100-200)
+        0.6: '#ff9900',   // Orange (AQI 200-300)
+        0.8: '#ff3300',   // Red-orange (AQI 300-400)
+        1.0: '#990000'    // Deep red (AQI 400-500+)
+      }
+    }).addTo(map);
+    
+    heatmapLayerRef.current = heatLayer;
+    
+    // Cleanup on unmount
+    return () => {
+      if (heatmapLayerRef.current && map) {
+        map.removeLayer(heatmapLayerRef.current);
+      }
+    };
+  }, [map, stations]);
+  
+  return null;
+};
+
 // Search component
 const SearchBar = ({ onSelectLocation }) => {
   const [query, setQuery] = useState('');
