@@ -449,6 +449,9 @@ function App() {
           
           <MapEventHandler onBoundsChange={fetchStations} showHeatmap={showHeatmap} />
           
+          {/* Heatmap Layer - shows colored areas on the map */}
+          {showHeatmap && <HeatmapLayer stations={stations} />}
+          
           {/* Station markers */}
           {!showHeatmap && stations.map((station) => (
             <Marker
